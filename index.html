@@ -53,13 +53,42 @@
       text-align: left !important;
       display: inline-block;
       font-family: 'JetBrains Mono', monospace;
+      font-style: normal !important;
+      transform: none !important;
+    }
+    * {
+      font-style: normal !important;
+    }
+    i, em, span, p, h1, h2, h3, h4, b, strong {
+      font-style: normal !important;
+      transform: none !important;
+    }
+    p {
+      line-height: 1.8 !important;
+      margin-bottom: 0.85rem !important;
+    }
+    /* تحسين تجربة الموبايل ومنع خروج العناصر عن الشاشة */
+    @media (max-width: 640px) {
+      .tab-btn {
+        width: 100%;
+        justify-content: flex-start;
+      }
+      header h1, .hero-title {
+        font-size: 1.35rem !important;
+        line-height: 1.4 !important;
+      }
+      table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+      }
     }
     @media print {
       .no-print { display: none !important; }
       body { background: #ffffff !important; color: #000000 !important; }
       .tab-pane { display: block !important; }
       .print-page-break { page-break-before: always; }
-      .bg-slate-900, .bg-slate-950, .bg-slate-900\/80 {
+      .bg-slate-900, .bg-slate-950, .bg-slate-900\/80, .bg-slate-900\/60, .bg-slate-950\/70 {
         background: transparent !important;
         color: #000000 !important;
         border-color: #cbd5e1 !important;
@@ -70,13 +99,13 @@
     }
   </style>
 </head>
-<body class="bg-[#0b1120] text-slate-200 min-h-screen selection:bg-indigo-600/60 selection:text-white custom-scrollbar">
+<body class="bg-[#0b1120] text-slate-200 min-h-screen selection:bg-indigo-600/60 selection:text-white custom-scrollbar overflow-x-hidden">
 
   <!-- Scroll Progress Bar -->
   <div id="scrollProgress" class="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-sky-400 via-indigo-500 to-amber-400 z-50 transform origin-right scale-x-0 transition-transform"></div>
 
   <!-- Toast Notification Box -->
-  <div id="toast" class="fixed bottom-6 left-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 bg-slate-900/95 border border-slate-700/80 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 backdrop-blur-md">
+  <div id="toast" class="fixed bottom-6 left-4 right-4 sm:right-auto sm:left-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 bg-slate-900/95 border border-slate-700/80 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 backdrop-blur-md">
     <i class="fa-solid fa-circle-check text-emerald-400 text-xl"></i>
     <span id="toastMsg" class="text-xs sm:text-sm font-semibold">تم نسخ التلخيص بنجاح!</span>
   </div>
@@ -90,26 +119,26 @@
   </div>
 
   <!-- Sticky Navbar -->
-  <header class="sticky top-0 z-40 bg-[#0f172a]/90 backdrop-blur-md border-b border-slate-800/80 no-print transition-all">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-20">
+  <header class="sticky top-0 z-40 bg-[#0f172a]/95 backdrop-blur-md border-b border-slate-800/80 no-print transition-all">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 sm:h-20">
         
         <!-- Logo -->
-        <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('ministry')">
-          <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-indigo-600 to-sky-500 flex items-center justify-center shadow-lg shadow-indigo-500/15">
-            <i class="fa-solid fa-book-bookmark text-white text-xl"></i>
+        <div class="flex items-center gap-2 sm:gap-3 cursor-pointer" onclick="switchTab('ministry')">
+          <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-indigo-600 to-sky-500 flex items-center justify-center shadow-lg shadow-indigo-500/15 shrink-0">
+            <i class="fa-solid fa-book-bookmark text-white text-base sm:text-xl"></i>
           </div>
           <div>
-            <span class="text-base sm:text-lg font-black text-slate-100 flex items-center gap-2">
+            <span class="text-sm sm:text-lg font-black text-slate-100 flex items-center gap-1.5">
               <span class="txt-ar">الموسوعة الإنجليزية</span>
               <span class="txt-en hidden">English Mega Hub</span>
-              <span class="text-[11px] px-2.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 font-mono">G10 Term 1</span>
+              <span class="text-[10px] sm:text-[11px] px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 font-mono">G10</span>
             </span>
-            <p class="text-xs text-slate-400 font-mono hidden sm:block">Ministry Curriculum &amp; Upstream Suite</p>
+            <p class="text-[10px] text-slate-400 font-mono hidden sm:block">Ministry Curriculum &amp; Upstream Suite</p>
           </div>
         </div>
 
-        <!-- Navigation Tabs -->
+        <!-- Navigation Tabs (Desktop) -->
         <nav class="hidden lg:flex items-center gap-1.5 text-xs font-semibold">
           <button onclick="switchTab('ministry')" class="tab-btn px-3.5 py-2 rounded-xl text-sky-300 bg-slate-800/90 border border-slate-700 transition flex items-center gap-1.5" data-tab="ministry">
             <i class="fa-solid fa-school text-sky-400"></i>
@@ -139,54 +168,87 @@
         </nav>
 
         <!-- Utility Buttons -->
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-1.5 sm:gap-2">
           <!-- Text to speech button -->
-          <button onclick="speakText(document.querySelector('.tab-pane:not(.hidden)').innerText)" title="قراءة الصفحة صوتياً" class="p-2.5 rounded-xl bg-slate-800/70 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/70 transition">
-            <i class="fa-solid fa-volume-high text-sky-400"></i>
+          <button onclick="speakText(document.querySelector('.tab-pane:not(.hidden)').innerText)" title="قراءة الصفحة صوتياً" class="p-2 sm:p-2.5 rounded-xl bg-slate-800/70 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/70 transition">
+            <i class="fa-solid fa-volume-high text-sky-400 text-xs sm:text-sm"></i>
           </button>
           <!-- Print Booklet Button -->
-          <button onclick="window.print()" title="طباعة ملزمة ورقية" class="p-2.5 rounded-xl bg-slate-800/70 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/70 transition">
-            <i class="fa-solid fa-print text-amber-400"></i>
+          <button onclick="window.print()" title="طباعة ملزمة ورقية" class="p-2 sm:p-2.5 rounded-xl bg-slate-800/70 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/70 transition">
+            <i class="fa-solid fa-print text-amber-400 text-xs sm:text-sm"></i>
           </button>
           <!-- Language Toggle -->
-          <button onclick="toggleLanguage()" class="px-3.5 py-2 rounded-xl bg-slate-800/70 border border-slate-700 hover:bg-slate-800 text-sky-300 font-semibold text-xs flex items-center gap-2 transition shadow-sm">
-            <i class="fa-solid fa-language text-base text-emerald-400"></i>
-            <span id="langBtnText">English</span>
+          <button onclick="toggleLanguage()" class="px-2.5 sm:px-3.5 py-2 rounded-xl bg-slate-800/70 border border-slate-700 hover:bg-slate-800 text-sky-300 font-semibold text-xs flex items-center gap-1.5 transition shadow-sm">
+            <i class="fa-solid fa-language text-sm sm:text-base text-emerald-400"></i>
+            <span id="langBtnText">EN</span>
+          </button>
+          <!-- Mobile Menu Hamburger -->
+          <button onclick="toggleMobileNav()" class="lg:hidden p-2 sm:p-2.5 rounded-xl bg-slate-800/70 hover:bg-slate-800 text-slate-300 border border-slate-700/70 transition">
+            <i class="fa-solid fa-bars text-sm"></i>
           </button>
         </div>
 
+      </div>
+
+      <!-- Mobile Navigation Drawer -->
+      <div id="mobileNav" class="hidden lg:hidden border-t border-slate-800 py-3 space-y-1.5 bg-[#0f172a] rounded-b-2xl">
+        <button onclick="switchTab('ministry'); toggleMobileNav();" class="w-full text-right px-3 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-800/60 flex items-center gap-2">
+          <i class="fa-solid fa-school text-sky-400 w-4"></i>
+          <span class="txt-ar">كتاب الوزارة (U1 &amp; U2)</span>
+          <span class="txt-en hidden">Ministry U1 &amp; U2</span>
+        </button>
+        <button onclick="switchTab('upstream'); toggleMobileNav();" class="w-full text-right px-3 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-800/60 flex items-center gap-2">
+          <i class="fa-solid fa-house-chimney text-emerald-400 w-4"></i>
+          <span class="txt-ar">مفردات وأفعال Upstream</span>
+          <span class="txt-en hidden">Upstream Vocab</span>
+        </button>
+        <button onclick="switchTab('commas'); toggleMobileNav();" class="w-full text-right px-3 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-800/60 flex items-center gap-2">
+          <i class="fa-solid fa-quote-left text-amber-400 w-4"></i>
+          <span class="txt-ar">الفواصل الـ 4 والكتابة</span>
+          <span class="txt-en hidden">4 Commas &amp; Writing</span>
+        </button>
+        <button onclick="switchTab('novel'); toggleMobileNav();" class="w-full text-right px-3 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-800/60 flex items-center gap-2">
+          <i class="fa-solid fa-anchor text-cyan-400 w-4"></i>
+          <span class="txt-ar">القصة (Ch 1 &amp; 2)</span>
+          <span class="txt-en hidden">The Novel (Ch 1 &amp; 2)</span>
+        </button>
+        <button onclick="switchTab('quiz'); toggleMobileNav();" class="w-full text-right px-3 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-800/60 flex items-center gap-2">
+          <i class="fa-solid fa-circle-question text-rose-400 w-4"></i>
+          <span class="txt-ar">الامتحان الشامل (77 سؤال)</span>
+          <span class="txt-en hidden">Mega Test Bank</span>
+        </button>
       </div>
     </div>
   </header>
 
   <!-- Hero Header -->
-  <section class="relative py-10 border-b border-slate-800/80 bg-gradient-to-b from-[#0f172a] to-[#0b1120] no-print">
+  <section class="relative py-12 border-b border-slate-800/80 bg-gradient-to-b from-[#0f172a] to-[#0b1120] no-print">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
       
       <!-- Attribution Badges -->
-      <div class="flex flex-wrap items-center justify-center gap-2.5 mb-5 text-xs sm:text-sm">
-        <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/80 border border-slate-800 text-slate-300 shadow-sm">
+      <div class="flex flex-wrap items-center justify-center gap-3 mb-6 text-xs sm:text-sm">
+        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/80 border border-slate-800 text-slate-300 shadow-sm">
           <i class="fa-solid fa-circle-check text-sky-400"></i>
           <span class="txt-ar">المعلومات مجمعة بواسطة: <strong class="text-white font-bold">مس رنا خالد</strong></span>
           <span class="txt-en hidden">Information gathered by: <strong class="text-white font-bold">Miss Rana Khaled</strong></span>
         </span>
-        <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/80 border border-slate-800 text-slate-300 shadow-sm">
+        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/80 border border-slate-800 text-slate-300 shadow-sm">
           <i class="fa-solid fa-code text-indigo-400"></i>
           <span class="txt-ar">الموقع معمول بواسطة: <strong class="text-white font-bold">عبدالرحمن عبدالله</strong></span>
           <span class="txt-en hidden">Website made by: <strong class="text-white font-bold">Abdelrahman Abdallah</strong></span>
         </span>
-        <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/80 border border-slate-800 text-slate-300 shadow-sm">
+        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/80 border border-slate-800 text-slate-300 shadow-sm">
           <i class="fa-solid fa-sparkles text-amber-400"></i>
           <span class="txt-ar">برعاية: <strong class="text-white font-bold">نموذج جيميناي (Gemini)</strong></span>
           <span class="txt-en hidden">Powered by: <strong class="text-white font-bold">Gemini Pro</strong></span>
         </span>
       </div>
 
-      <h1 class="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-100 leading-snug mb-3">
+      <h1 class="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-100 leading-snug mb-4">
         <span class="txt-ar">المنصة الشاملة لمراجعة إنجليزي الصف الأول الثانوي</span>
         <span class="txt-en hidden">G10 English Comprehensive Revision Hub</span>
       </h1>
-      <p class="max-w-3xl mx-auto text-slate-400 text-xs sm:text-sm leading-relaxed mb-4 font-cairo">
+      <p class="max-w-3xl mx-auto text-slate-400 text-xs sm:text-sm leading-relaxed mb-6 font-cairo">
         <span class="txt-ar">تفريغ دقيق ومريح للعين: نصوص وقواعد كتاب الوزارة، تدريبات ومفردات منهج Upstream، أحكام الفواصل الأربعة، مهارات المقال والتوثيق، ورواية العجوز والبحر مع بنك أسئلة الـ 77 سؤالاً كاملاً.</span>
         <span class="txt-en hidden">Organized and accessible review: Ministry Units 1 &amp; 2, Upstream Vocabulary and Phrasal Verbs, The 4 Comma Rules, Academic Writing protocols, and The Old Man and the Sea with all 77 practice questions.</span>
       </p>
@@ -195,39 +257,39 @@
   </section>
 
   <!-- Main Content Space -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16">
 
     <!-- ============================================================== -->
     <!-- 1. MINISTRY CURRICULUM (UNITS 1 & 2)                           -->
     <!-- ============================================================== -->
-    <section id="sec-ministry" class="tab-pane space-y-8">
-      <div class="flex items-center justify-between border-b border-slate-800/80 pb-3 flex-wrap gap-2">
+    <section id="sec-ministry" class="tab-pane space-y-10">
+      <div class="flex items-center justify-between border-b border-slate-800/80 pb-4 flex-wrap gap-2">
         <div>
           <span class="text-sky-400 text-xs font-semibold uppercase tracking-wider font-mono">Ministry Curriculum 2025/2026 • In-Depth Analysis</span>
-          <h2 class="text-xl sm:text-2xl font-black text-slate-100 mt-1">
+          <h2 class="text-xl sm:text-2xl font-black text-slate-100 mt-2">
             <span class="txt-ar">١. كتاب الوزارة: شرح الوحدتين الأولى والثانية بالتفصيل المنظم</span>
             <span class="txt-en hidden">1. Ministry Textbook: Units 1 &amp; 2 Academic Breakdown</span>
           </h2>
         </div>
-        <button onclick="speakText(document.getElementById('sec-ministry').innerText)" class="px-3 py-1.5 rounded-lg bg-slate-800/70 hover:bg-slate-800 text-xs font-semibold text-slate-300 flex items-center gap-1.5 transition">
+        <button onclick="speakText(document.getElementById('sec-ministry').innerText)" class="px-3.5 py-2 rounded-xl bg-slate-800/70 hover:bg-slate-800 text-xs font-semibold text-slate-300 flex items-center gap-1.5 transition">
           <i class="fa-solid fa-volume-high text-sky-400"></i>
           <span class="txt-ar">استمع للقسم</span><span class="txt-en hidden">Listen Section</span>
         </button>
       </div>
 
       <!-- Unit 1 & Unit 2 Detailed Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         
         <!-- Unit 1 -->
-        <div class="bg-slate-900/60 border border-slate-800/90 rounded-3xl p-6 sm:p-7 space-y-5">
+        <div class="bg-slate-900/60 border border-slate-800/90 rounded-3xl p-6 sm:p-8 space-y-6">
           <div class="flex items-center justify-between">
             <h3 class="text-lg sm:text-xl font-bold text-sky-300">Unit 1: Egypt's Heritage (تراث مصر الخالد)</h3>
-            <span class="text-xs px-2.5 py-0.5 rounded-full bg-sky-950/60 text-sky-300 border border-sky-800/50 font-mono">Past Tenses</span>
+            <span class="text-xs px-3 py-1 rounded-full bg-sky-950/60 text-sky-300 border border-sky-800/50 font-mono">Past Tenses</span>
           </div>
 
-          <div class="space-y-4 text-xs leading-relaxed text-slate-300">
-            <div class="p-4 bg-slate-950/70 rounded-2xl border border-slate-800 space-y-2">
-              <b class="text-sky-400 block text-sm">أولاً: التحليل الموضوعي لنصوص الوحدة الأولى:</b>
+          <div class="space-y-6 text-xs leading-relaxed text-slate-300">
+            <div class="p-5 bg-slate-950/70 rounded-2xl border border-slate-800 space-y-3">
+              <b class="text-sky-400 block text-sm mb-2">أولاً: التحليل الموضوعي لنصوص الوحدة الأولى:</b>
               <p>• <b>عراقة الحضارة (Ancient Civilization):</b> مصر مهد الحضارة الإنسانية؛ قدّم أجدادنا معارف رائدة في الكتابة، والرياضيات، والطب، والزراعة.</p>
               <p>• <b>الكتابة الهيروغليفية (Hieroglyphs):</b> لم تكن مجرد فن وزخارف على جدران المعابد، بل كانت أداة رسمية لتدوين وتوثيق التاريخ والأحداث السياسية والدينية.</p>
               <p>• <b>مكتبة الإسكندرية (Library of Alexandria):</b> كانت مركزاً عالمياً لتجميع المعرفة وملاذاً لعلماء العالم القديم لتبادل العلوم.</p>
@@ -235,88 +297,88 @@
               <p>• <b>النهضة الحديثة:</b> الربط بين الماضي العريق والحاضر المتطور من خلال مشروعات الطرق والكباري الحديثة وافتتاح المتحف المصري الكبير (<span class="en-code text-sky-300 font-semibold">Grand Egyptian Museum</span>).</p>
             </div>
 
-            <div class="p-4 bg-slate-950/70 rounded-2xl border border-slate-800 space-y-3">
-              <b class="text-indigo-400 block text-sm">ثانياً: الجرامر بالتفصيل الدقيق (Past Simple vs. Past Continuous):</b>
+            <div class="p-5 bg-slate-950/70 rounded-2xl border border-slate-800 space-y-4">
+              <b class="text-indigo-400 block text-sm mb-2">ثانياً: الجرامر بالتفصيل الدقيق (Past Simple vs. Past Continuous):</b>
               
-              <div class="space-y-1.5">
+              <div class="space-y-2">
                 <b class="text-white block">١. الماضي البسيط (Past Simple):</b>
                 <p>يعبر عن حدث بدأ وانتهى تماماً في نقطة زمنية محددة في الماضي:</p>
-                <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800 en-code w-full text-emerald-400 font-mono text-[11px]">
+                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 en-code w-full text-emerald-400 font-mono text-[11px] my-1">
                   The Ancient Egyptians taught the world mathematics.
                 </div>
                 <p class="text-slate-400">يعبر عن عادة قديمة لم تعد مستمرة مع (<span class="en-code text-slate-300">used to + inf</span>): <span class="en-code text-slate-300">He used to live in a village.</span></p>
               </div>
 
-              <div class="space-y-1.5">
+              <div class="space-y-2 pt-2">
                 <b class="text-white block">٢. الماضي المستمر (Past Continuous: was/were + v-ing):</b>
                 <p>حدث كان مستمراً أثناء وقت محدد بالدقة في الماضي:</p>
-                <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800 en-code w-full text-emerald-400 font-mono text-[11px]">
+                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 en-code w-full text-emerald-400 font-mono text-[11px] my-1">
                   At 8 p.m. yesterday, Sama was reading a historical book.
                 </div>
                 <p>حدث طويل كان مستمراً وقطعه فجأة حدث قصير (في الماضي البسيط):</p>
-                <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800 en-code w-full text-emerald-400 font-mono text-[11px]">
+                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 en-code w-full text-emerald-400 font-mono text-[11px] my-1">
                   Mr. Ramy was calling his wife when he dropped his mobile.
                 </div>
               </div>
 
-              <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 space-y-1.5 text-slate-300">
-                <b class="text-amber-300 block">معادلات الروابط الزمنية وفخاخ الامتحان:</b>
+              <div class="p-4 bg-slate-900/90 rounded-xl border border-slate-800 space-y-2 text-slate-300 mt-3">
+                <b class="text-amber-300 block mb-1">معادلات الروابط الزمنية وفخاخ الامتحان:</b>
                 <p>• <span class="en-code text-white">While / As / Just as + Past Continuous, Past Simple</span></p>
                 <p>• <span class="en-code text-white">When + Past Simple, Past Continuous</span></p>
                 <p>• <b>حذف الفاعل:</b> إذا لم يأتِ فاعل بعد <span class="en-code text-sky-300">While</span> نختار مباشرة <span class="en-code text-sky-300">verb + ing</span>:
-                <br><span class="en-code text-emerald-300">While watching the match, I fell asleep.</span></p>
+                <br><span class="en-code text-emerald-300 mt-1">While watching the match, I fell asleep.</span></p>
                 <p>• <b>قاعدة During:</b> تعطي نفس المعنى ولكن يليها <b>اسم (Noun)</b> فقط بلا فعل:
-                <br><span class="en-code text-emerald-300">During the match, the player broke his leg.</span></p>
+                <br><span class="en-code text-emerald-300 mt-1">During the match, the player broke his leg.</span></p>
                 <p>• <b>فخ أفعال الحالة (Stative Verbs):</b> أفعال الملكية والإدراك والشعور (<span class="en-code text-amber-300">be, have, look, seem, belong</span>) لا تأتي في صيغة الاستمرار:
-                <br><span class="en-code text-emerald-300">While he was at home (NOT: while he was being...)</span></p>
+                <br><span class="en-code text-emerald-300 mt-1">While he was at home (NOT: while he was being...)</span></p>
               </div>
             </div>
           </div>
         </div>
 
         <!-- Unit 2 -->
-        <div class="bg-slate-900/60 border border-slate-800/90 rounded-3xl p-6 sm:p-7 space-y-5">
+        <div class="bg-slate-900/60 border border-slate-800/90 rounded-3xl p-6 sm:p-8 space-y-6">
           <div class="flex items-center justify-between">
             <h3 class="text-lg sm:text-xl font-bold text-emerald-400">Unit 2: Hands Help, Hearts Care (عطاء القلوب)</h3>
-            <span class="text-xs px-2.5 py-0.5 rounded-full bg-emerald-950/60 text-emerald-300 border border-emerald-800/50 font-mono">Modals of Obligation</span>
+            <span class="text-xs px-3 py-1 rounded-full bg-emerald-950/60 text-emerald-300 border border-emerald-800/50 font-mono">Modals of Obligation</span>
           </div>
 
-          <div class="space-y-4 text-xs leading-relaxed text-slate-300">
-            <div class="p-4 bg-slate-950/70 rounded-2xl border border-slate-800 space-y-2">
-              <b class="text-emerald-400 block text-sm">أولاً: التحليل الموضوعي لدروس الوحدة الثانية:</b>
+          <div class="space-y-6 text-xs leading-relaxed text-slate-300">
+            <div class="p-5 bg-slate-950/70 rounded-2xl border border-slate-800 space-y-3">
+              <b class="text-emerald-400 block text-sm mb-2">أولاً: التحليل الموضوعي لدروس الوحدة الثانية:</b>
               <p>• <b>قصة الخبز الدافئ (The Warm Bread):</b> كانت سما تشعر بالعزلة وتراجع الدرجات، فزارتها جارتها مسز آية بخبز دافئ؛ وعلّمتها القصة كيف أن اللمسات الإنسانية البسيطة تغير المزاج تماماً وتلهم الشخص لمساعدة أسرته والآخرين.</p>
               <p>• <b>مبادرة غرس الأشجار (Planting Trees):</b> قاد أحمد حملة شبابية لتشجير القرية بغرس الشتلات الصغيرة (<span class="en-code text-emerald-300">Saplings</span>)، مما عزز ثقتهم بأنفسهم (<span class="en-code text-emerald-300">Confidence</span>) وحوّل قريتهم لبيئة صحية مستدامة.</p>
               <p>• <b>أبطال المجتمع في الخطر (Serving in Danger):</b> رجل الإطفاء رضوان بالإسكندرية يوضح أن عمله لا يقتصر على إخماد الحرائق، بل يشمل الإنقاذ من الحوادث والفيضانات، معتبراً الخدمة واجباً (<span class="en-code text-emerald-300">Obligation</span>) لحماية الأمل في المجتمع.</p>
             </div>
 
-            <div class="p-4 bg-slate-950/70 rounded-2xl border border-slate-800 space-y-3">
-              <b class="text-emerald-400 block text-sm">ثانياً: الجرامر بالتفصيل الدقيق (Modal Verbs: Must, Have to, Should):</b>
+            <div class="p-5 bg-slate-950/70 rounded-2xl border border-slate-800 space-y-4">
+              <b class="text-emerald-400 block text-sm mb-2">ثانياً: الجرامر بالتفصيل الدقيق (Modal Verbs: Must, Have to, Should):</b>
 
-              <div class="space-y-1">
+              <div class="space-y-2">
                 <b class="text-white block">١. الفعل Must والمصدر:</b>
                 <p>• <b>القوانين والقواعد الرسمية المكتوبة:</b> <span class="en-code text-emerald-300">Drivers must follow traffic signs.</span></p>
                 <p>• <b>الإلزام الداخلي الصادر من النفس:</b> <span class="en-code text-emerald-300">I must buy a gift for my mother today.</span></p>
                 <p>• <b>الدعوة الحارة (Warm Invitation):</b> <span class="en-code text-emerald-300">You must come and try my cake.</span></p>
               </div>
 
-              <div class="space-y-1">
+              <div class="space-y-2 pt-2">
                 <b class="text-white block">٢. التحريم والمنع البات (Mustn't + inf):</b>
                 <p>ممنوع ومحظور بقوة القانون (<span class="en-code text-rose-400">Prohibited / Forbidden / Not allowed</span>):</p>
-                <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800 en-code w-full text-rose-300 font-mono text-[11px]">
+                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 en-code w-full text-rose-300 font-mono text-[11px] my-1">
                   You mustn't park here; there is a "No Parking" sign.
                 </div>
               </div>
 
-              <div class="space-y-1">
+              <div class="space-y-2 pt-2">
                 <b class="text-white block">٣. الإلزام الخارجي المفروض (Have to / Has to):</b>
                 <p>إلزام مفروض بسلطة أو ظرف لا تملك فيه خياراً:</p>
-                <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800 en-code w-full text-sky-300 font-mono text-[11px]">
+                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 en-code w-full text-sky-300 font-mono text-[11px] my-1">
                   We have to stay late at work today; the boss ordered us.
                 </div>
                 <p class="text-slate-400">• <b>عدم الإلزام (Don't / Doesn't have to):</b> لست مضطراً ولا داعي: <span class="en-code text-slate-300">Tomorrow is a holiday; you don't have to wake up early.</span></p>
               </div>
 
-              <div class="space-y-1">
+              <div class="space-y-2 pt-2">
                 <b class="text-white block">٤. النصيحة الودية والاقتراح (Should / Shouldn't):</b>
                 <p><span class="en-code text-amber-300">You should drink plenty of water in hot weather.</span></p>
               </div>
@@ -330,78 +392,78 @@
     <!-- ============================================================== -->
     <!-- 2. UPSTREAM VOCABULARY & PHRASAL VERBS                         -->
     <!-- ============================================================== -->
-    <section id="sec-upstream" class="tab-pane hidden space-y-8">
-      <div class="flex items-center justify-between border-b border-slate-800/80 pb-3 flex-wrap gap-2">
+    <section id="sec-upstream" class="tab-pane hidden space-y-10">
+      <div class="flex items-center justify-between border-b border-slate-800/80 pb-4 flex-wrap gap-2">
         <div>
           <span class="text-emerald-400 text-xs font-semibold uppercase tracking-wider font-mono">Upstream Specialized Lexicon • Full Detail</span>
-          <h2 class="text-xl sm:text-2xl font-black text-slate-100 mt-1">
+          <h2 class="text-xl sm:text-2xl font-black text-slate-100 mt-2">
             <span class="txt-ar">٢. مفردات البيوت والقلاع، الأفعال الاصطلاحية، والتعبيرات بالتحليل الشامل</span>
             <span class="txt-en hidden">2. Upstream Architecture, Phrasal Verbs &amp; Idiomatic Phrases</span>
           </h2>
         </div>
-        <button onclick="speakText(document.getElementById('sec-upstream').innerText)" class="px-3 py-1.5 rounded-lg bg-slate-800/70 hover:bg-slate-800 text-xs font-semibold text-slate-300 flex items-center gap-1.5 transition">
+        <button onclick="speakText(document.getElementById('sec-upstream').innerText)" class="px-3.5 py-2 rounded-xl bg-slate-800/70 hover:bg-slate-800 text-xs font-semibold text-slate-300 flex items-center gap-1.5 transition">
           <i class="fa-solid fa-volume-high text-emerald-400"></i>
           <span class="txt-ar">استمع للقسم</span><span class="txt-en hidden">Listen Section</span>
         </button>
       </div>
 
       <!-- Housing, Roofing & Safety Devices -->
-      <div class="bg-slate-900/60 border border-slate-800/90 rounded-3xl p-6 sm:p-8 space-y-6">
+      <div class="bg-slate-900/60 border border-slate-800/90 rounded-3xl p-6 sm:p-8 space-y-8">
         <h3 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
           <i class="fa-solid fa-house-chimney text-sky-400"></i>
           <span class="txt-ar">أنواع الأسقف، العمارة القروسطية، وأدوات أمان الأطفال</span>
           <span class="txt-en hidden">Detailed Housing Architecture &amp; Child Safety Devices</span>
         </h3>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-xs">
-          <div class="bg-slate-950/70 p-4 rounded-2xl border border-slate-800 space-y-1.5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 text-xs">
+          <div class="bg-slate-950/70 p-5 rounded-2xl border border-slate-800 space-y-2">
             <b class="text-sky-300 text-sm block">Thatched roof (سقف قش)</b>
             <p class="text-slate-300 leading-relaxed">سقف تقليدي ريفي مصنوع من القش والبوص وأعواد النباتات المجففة (<span class="en-code text-slate-200">straw or reeds</span>). ممتاز في العزل الحراري لكنه قابل للاشتعال.</p>
           </div>
-          <div class="bg-slate-950/70 p-4 rounded-2xl border border-slate-800 space-y-1.5">
+          <div class="bg-slate-950/70 p-5 rounded-2xl border border-slate-800 space-y-2">
             <b class="text-sky-300 text-sm block">Pitched roof (سقف مائل)</b>
             <p class="text-slate-300 leading-relaxed">سقف مصمم بانحدار مائل (<span class="en-code text-slate-200">sloping roof</span>) ليتيح لمياه الأمطار والثلوج الانزلاق والسقوط دون إثقال المبنى.</p>
           </div>
-          <div class="bg-slate-950/70 p-4 rounded-2xl border border-slate-800 space-y-1.5">
+          <div class="bg-slate-950/70 p-5 rounded-2xl border border-slate-800 space-y-2">
             <b class="text-sky-300 text-sm block">Tiled roof (سقف قرميدي)</b>
             <p class="text-slate-300 leading-relaxed">سقف مغطى بقطع متراصة من القرميد الفخاري المصنوع من الطين المحروق الصلب (<span class="en-code text-slate-200">baked clay tiles</span>)، وهو متين ومقاوم للطقس.</p>
           </div>
-          <div class="bg-slate-950/70 p-4 rounded-2xl border border-slate-800 space-y-1.5">
+          <div class="bg-slate-950/70 p-5 rounded-2xl border border-slate-800 space-y-2">
             <b class="text-amber-300 text-sm block">The Keep (الحصن الداخلي)</b>
             <p class="text-slate-300 leading-relaxed">البرج الرئيسي الأكثر تحصيناً ومناعة في قلب القلعة القروسطية، سكنت فيه عائلة اللورد والبارون كخط دفاع أخير أثناء الحصار.</p>
           </div>
-          <div class="bg-slate-950/70 p-4 rounded-2xl border border-slate-800 space-y-1.5">
+          <div class="bg-slate-950/70 p-5 rounded-2xl border border-slate-800 space-y-2">
             <b class="text-amber-300 text-sm block">Moat (الخندق المائي)</b>
             <p class="text-slate-300 leading-relaxed">قناة مائية عميقة وواسعة محفورة حول أسوار القلعة بالكامل ومملوءة بالماء لمنع تقدم آلات الحصار والجنود المهاجمين.</p>
           </div>
-          <div class="bg-slate-950/70 p-4 rounded-2xl border border-slate-800 space-y-1.5">
+          <div class="bg-slate-950/70 p-5 rounded-2xl border border-slate-800 space-y-2">
             <b class="text-amber-300 text-sm block">Drawbridge (الجسر المتحرك)</b>
             <p class="text-slate-300 leading-relaxed">جسر خشبي ثقيل مثبت بسلاسل، يمكن رفعه وسحبه لأعلى (<span class="en-code text-slate-200">pulled up</span>) لقطع العبور فوق الخندق المائي عند حدوث خطر.</p>
           </div>
-          <div class="bg-slate-950/70 p-4 rounded-2xl border border-slate-800 space-y-1.5">
+          <div class="bg-slate-950/70 p-5 rounded-2xl border border-slate-800 space-y-2">
             <b class="text-emerald-300 text-sm block">Safety Covers (أغطية المقابس)</b>
             <p class="text-slate-300 leading-relaxed">سدادات بلاستيكية توضع على مقابس الكهرباء (<span class="en-code text-slate-200">electrical sockets</span>) لحماية الأطفال الصغار من خطر الصعق الكهربائي (<span class="en-code text-slate-200">electrocution</span>).</p>
           </div>
-          <div class="bg-slate-950/70 p-4 rounded-2xl border border-slate-800 space-y-1.5">
+          <div class="bg-slate-950/70 p-5 rounded-2xl border border-slate-800 space-y-2">
             <b class="text-emerald-300 text-sm block">Safety Catches (مزالج الأدراج)</b>
             <p class="text-slate-300 leading-relaxed">أقفال ومزالج أمان تثبت على أدراج وخزائن المطبخ لمنع وصول الأطفال للأشياء الحادة أو المنظفات المنزلية.</p>
           </div>
-          <div class="bg-slate-950/70 p-4 rounded-2xl border border-slate-800 space-y-1.5">
+          <div class="bg-slate-950/70 p-5 rounded-2xl border border-slate-800 space-y-2">
             <b class="text-emerald-300 text-sm block">Safety Gate &amp; Guard Rail</b>
             <p class="text-slate-300 leading-relaxed">بوابة الأمان (<span class="en-code text-slate-200">safety gate</span>) تركب على رأس الدرج لحماية الأطفال من السقوط، وحاجز الأمان (<span class="en-code text-slate-200">guard rail</span>) يحيط بحمام السباحة.</p>
           </div>
         </div>
 
-        <div class="p-4 bg-slate-950/70 rounded-2xl border border-slate-800 text-xs grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="space-y-1.5">
-            <b class="text-slate-200 block mb-1">المفاهيم السكنية والفروق الجغرافية:</b>
+        <div class="p-6 bg-slate-950/70 rounded-2xl border border-slate-800 text-xs grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-3">
+            <b class="text-slate-200 block text-sm mb-2">المفاهيم السكنية والفروق الجغرافية:</b>
             <p>• <b>Suburbs (الضواحي):</b> أحياء سكنية هادئة خارج مركز المدينة تتميز بمساحات أكبر وخضرة.</p>
             <p>• <b>Outskirts (الأطراف):</b> أقصى حواف وأطراف المدينة وأبعد نقطة عن المركز التجاري.</p>
             <p>• <b>Terraced house:</b> منازل متطابقة متلاصقة تشترك في الجدران الجانبية في صف كامل.</p>
             <p>• <b>Lodging:</b> غرفة مؤجرة داخل منزل يدفع المستأجر إيجاراً شهرياً مقابل السكن فيها.</p>
           </div>
-          <div class="space-y-1.5">
-            <b class="text-slate-200 block mb-1">المصطلحات الطارئة والوظيفية:</b>
+          <div class="space-y-3">
+            <b class="text-slate-200 block text-sm mb-2">المصطلحات الطارئة والوظيفية:</b>
             <p>• <b>Scald:</b> حرق شديد مؤلم ناتج عن انسكاب ماء مغلي أو سوائل ساخنة على الجلد.</p>
             <p>• <b>Evicted:</b> مطرود ومُخلى من العين المؤجرة بحكم قانوني لعدم سداد الإيجار للمالك (<span class="en-code text-slate-300">landlord</span>).</p>
             <p>• <b>Caterer:</b> متعهد الحفلات والمناسبات الذي يتولى تحضير وتقديم الأطعمة والمشروبات.</p>
@@ -752,6 +814,11 @@
   <!-- Application Logic Scripts -->
   <script>
     let currentLanguage = 'ar';
+
+    function toggleMobileNav() {
+      const nav = document.getElementById('mobileNav');
+      if (nav) nav.classList.toggle('hidden');
+    }
 
     function toggleLanguage() {
       currentLanguage = currentLanguage === 'ar' ? 'en' : 'ar';
